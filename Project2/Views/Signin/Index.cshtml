@@ -1,0 +1,170 @@
+﻿@model IEnumerable<Project2.Azure_DB.Signin>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700,700i,900&display=swap" rel="stylesheet">
+<style>
+    h5 {
+        font-size: 18px;
+    }
+</style>
+
+<head>
+    @Scripts.Render("~/Scripts/Signin.js")
+</head>
+
+<div id="result">
+    <div class="container">
+        <div class="list-inline" ">
+            <div class="col-lg-10" style="padding-top:7px;">
+                <h3>Sign-in Sheet</h3>
+            </div>
+            <div class="col-lg-2">
+                <h5 style="padding-top:40px;">@Html.ActionLink("To Work List", "Index", "WorkList")</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 navbar-fixed-bottom">
+        <a href="@Url.Action("Create")">
+            <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/create.png" style="width:240px" />
+        </a>
+        <p>  </p>
+    </div>
+    <table class="table">
+        <div class="page-holder w-100 d-flex flex-wrap">
+            <div class="container-fluid px-xl-5">
+                <section class="py-5">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                </div>
+                                <div class="card-body">
+                                    <table class="table  table-hover card-text">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.WorkDate)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.ArrivedTime)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(model => model.LeaveTime)
+                                                </th>
+                                                <th>總時間</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td id="time">
+                                                        @Html.DisplayFor(modelItem => item.WorkDate)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ArrivedTime)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.LeaveTime)
+                                                    </td>
+
+                                                    @{
+                                                        var a = item.ArrivedTime.TotalHours;
+                                                        var b = item.LeaveTime.TotalHours;
+                                                        var workTime = (b - a) - 1.0;
+                                                    }
+
+                                                    @if ((item.LeaveTime.TotalHours - item.ArrivedTime.TotalHours) - 1.0 < 7.999)
+                                                    {
+                                                        <td style="color:red">
+                                                            @(Math.Round((item.LeaveTime.TotalHours - item.ArrivedTime.TotalHours) - 1.0, 2))
+                                                        </td>
+                                                    }
+                                                    else if (workTime > 8.0)
+                                                    {
+                                                        <td style="color:greenyellow">
+                                                            @(Math.Round((item.LeaveTime.TotalHours - item.ArrivedTime.TotalHours) - 1.0, 2))
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @((item.LeaveTime.TotalHours - item.ArrivedTime.TotalHours) - 1.0)
+                                                        </td>
+                                                    }
+                                                    <td class="col-lg-2">
+                                                        <a href="@Url.Action("Edit", new { id = item.SigninId })">
+                                                            <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/edit_btn.png" style="width:60px" />
+                                                        </a>
+                                                        <a href="@Url.Action("Delete", new { id = item.SigninId })">
+                                                            <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/delete_btn.png" style="width:80px" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                @{ double time = Model.Sum(l => l.LeaveTime.TotalHours) - Model.Sum(a => a.ArrivedTime.TotalHours) - Model.Select(d => d.WorkDate).Count(); }
+                                                <td><u>@(Math.Floor(time))</u></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    @{ var monthOption = new List<SelectListItem>
+                                       {
+                                            new SelectListItem { Value = "1", Text = "一月" },
+                                            new SelectListItem { Value = "2", Text = "二月" },
+                                            new SelectListItem { Value = "3", Text = "三月" },
+                                            new SelectListItem { Value = "4", Text = "四月" },
+                                            new SelectListItem { Value = "5", Text = "五月" },
+                                            new SelectListItem { Value = "6", Text = "六月" },
+                                            new SelectListItem { Value = "7", Text = "七月" },
+                                            new SelectListItem { Value = "8", Text = "八月" },
+                                            new SelectListItem { Value = "9", Text = "九月" },
+                                            new SelectListItem { Value = "10", Text = "十月" },
+                                            new SelectListItem { Value = "11", Text = "十一月" },
+                                            new SelectListItem { Value = "12", Text = "十二月" },
+                                       };
+
+                                        var yearOption = new List<SelectListItem>
+                                        {
+                                            new SelectListItem { Value = "2019", Text = "2019" },
+                                            new SelectListItem { Value = "2020", Text = "2020" },
+                                            new SelectListItem { Value = "2021", Text = "2021" },
+                                            new SelectListItem { Value = "2022", Text = "2022" },
+                                            new SelectListItem { Value = "2023", Text = "2023" },
+                                            new SelectListItem { Value = "2024", Text = "2024" },
+                                            new SelectListItem { Value = "2025", Text = "2025" },
+                                            new SelectListItem { Value = "2026", Text = "2026" },
+                                            new SelectListItem { Value = "2027", Text = "2027" },
+                                            new SelectListItem { Value = "2028", Text = "2028" },
+                                            new SelectListItem { Value = "2029", Text = "2029" },
+                                            new SelectListItem { Value = "2030", Text = "2030" },
+                                        };
+
+                                        using (Html.BeginForm("Index", "Signin", FormMethod.Get))
+                                        {
+                                            @Html.DropDownList("year", new SelectList(yearOption, "Value", "Text"), "Select Year", new { @class = "form-control", style = "width:150px;" })
+                                            @Html.DropDownList("month", new SelectList(monthOption, "Value", "Text"), "Select Month", new { @class = "form-control", style = "width:150px;" })
+                                            <input class="form-control btn-success" type="submit" name="SaveButton" value="Submit" style="width:150px;" />
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Content/FontStyle")
+}

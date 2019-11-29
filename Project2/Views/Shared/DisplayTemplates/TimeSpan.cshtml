@@ -1,0 +1,10 @@
+﻿@model TimeSpan
+@using System.Globalization;
+@if (Model == null)
+{
+    <span class="text-danger">No TimeSpan Time!</span>
+}
+else
+{
+    <span>@string.Format("{0:00}:{1:00}", Model.Hours, Model.Minutes)</span>
+}

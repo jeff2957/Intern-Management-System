@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="container">
+    <div class="h2">
+        <h1>INTERN FILE</h1>
+    </div>
+    <div class="container">
+        <link href="https://fonts.googleapis.com/css?family=Lato:700i,900&display=swap" rel="stylesheet">
+
+        <div class="col-md-push-3 ">
+            @{ if (System.Web.HttpContext.Current.User.Identity.Name == "Ted Tai")
+                {
+                    <h5>📁 @Html.ActionLink("Ted Tai", "Index", "WorkList")</h5>
+                }
+                else if (System.Web.HttpContext.Current.User.Identity.Name == "Jeff Lu")
+                {
+                    <h5>📁 @Html.ActionLink("Jeff Lu", "Index", "WorkList")</h5>
+                }
+            }
+        </div>
+        @*<div class="col-md-push-3">
+                @{if (System.Web.HttpContext.Current.User.Identity.Name == "jeff@admin.com")
+                    {
+                        <h5>📁 @Html.ActionLink("Jeff Lu", "Index", "WorkList")</h5>
+                    }
+                    else
+                    {
+                        <h5>📁 Jeff Lu</h5>
+                    }
+                }
+            </div>*@
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Content/HomeFontStyle")
+}

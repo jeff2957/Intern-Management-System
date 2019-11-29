@@ -1,0 +1,164 @@
+﻿@model Project2.Models.AdminViewModel
+@{
+    ViewBag.Title = "AdminIndex";
+}
+
+
+    <div id="result">
+        <h2>實習時數檢視</h2>
+
+        <table class="table  table-hover card-text">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PartialTask.First().TaskName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PartialTask.First().Duration)
+                    </th>
+                    <th class="col-lg-3">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PartialTask)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TaskName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Duration)
+                        </td>
+                        <td class="col-lg-2">
+                            <a href="@Url.Action("WorklistEdit", new { id = item.TaskId })">
+                                <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/edit_btn.png" style="width:60px" />
+                            </a>
+                            <a href="@Url.Action("WorklistDelete", new { id = item.TaskId })">
+                                <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/delete_btn.png" style="width:80px" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td><u>@Model.PartialTask.Sum(b => b.Duration)</u></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="table  table-hover card-text">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PartialSignin.First().WorkDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PartialSignin.First().ArrivedTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PartialSignin.First().LeaveTime)
+                    </th>
+                    <th>總時間</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PartialSignin.First().CheckValue)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PartialSignin)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.WorkDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ArrivedTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LeaveTime)
+                        </td>
+                        <td>
+                            @{
+                                var a = item.ArrivedTime.Hours;
+                                var b = item.LeaveTime.Hours;
+                                var workTime = b - a - 1;
+                            }
+                            @(workTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CheckValue)
+                        </td>
+                        <td class="col-lg-2">
+                            <a href="@Url.Action("SigninEdit", new { id = item.SigninId })">
+                                <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/edit_btn.png" style="width:60px" />
+                            </a>
+                            <a href="@Url.Action("SigninDelete", new { id = item.SigninId })">
+                                <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/delete_btn.png" style="width:80px" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    @{ double time = Model.PartialSignin.Sum(l => l.LeaveTime.Hours) - Model.PartialSignin.Sum(a => a.ArrivedTime.Hours); }
+                    <td><u>@(time)</u></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        @{ var monthOption = new List<SelectListItem>
+           {
+               new SelectListItem { Value = "1", Text = "一月" },
+               new SelectListItem { Value = "2", Text = "二月" },
+               new SelectListItem { Value = "3", Text = "三月" },
+               new SelectListItem { Value = "4", Text = "四月" },
+               new SelectListItem { Value = "5", Text = "五月" },
+               new SelectListItem { Value = "6", Text = "六月" },
+               new SelectListItem { Value = "7", Text = "七月" },
+               new SelectListItem { Value = "8", Text = "八月" },
+               new SelectListItem { Value = "9", Text = "九月" },
+               new SelectListItem { Value = "10", Text = "十月" },
+               new SelectListItem { Value = "11", Text = "十一月" },
+               new SelectListItem { Value = "12", Text = "十二月" },
+           };
+
+            var yearOption = new List<SelectListItem>
+           {
+               new SelectListItem { Value = "2019", Text = "2019" },
+               new SelectListItem { Value = "2020", Text = "2020" },
+               new SelectListItem { Value = "2021", Text = "2021" },
+               new SelectListItem { Value = "2022", Text = "2022" },
+               new SelectListItem { Value = "2023", Text = "2023" },
+               new SelectListItem { Value = "2024", Text = "2024" },
+               new SelectListItem { Value = "2025", Text = "2025" },
+               new SelectListItem { Value = "2026", Text = "2026" },
+               new SelectListItem { Value = "2027", Text = "2027" },
+               new SelectListItem { Value = "2028", Text = "2028" },
+               new SelectListItem { Value = "2029", Text = "2029" },
+               new SelectListItem { Value = "2030", Text = "2030" },
+           };
+
+            var nameOption = new List<SelectListItem>
+           {
+               new SelectListItem { Value = "Jeff Lu", Text = "Jeff" },
+               new SelectListItem { Value = "Ted Tai", Text = "Ted" },
+           };
+
+            using (Html.BeginForm("AdminIndex", "Admin", FormMethod.Get))
+            {
+                @Html.DropDownList("year", new SelectList(yearOption, "Value", "Text"), "Select Year", new { @class = "form-control", style = "width:150px;" })
+                @Html.DropDownList("month", new SelectList(monthOption, "Value", "Text"), "Select Month", new { @class = "form-control", style = "width:150px;" })
+                @Html.DropDownList("internName", new SelectList(nameOption, "Value", "Text"), "Select Intern", new { @class = "form-control", style = "width:150px;" })
+                <input class="form-control btn-success" type="submit" name="SaveButton" value="Submit" style="width:150px;" />
+                <a href="ExportToExcel" id="exportLink">Export To Excel</a>
+            }
+        }
+    </div>

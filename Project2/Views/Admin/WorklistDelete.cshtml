@@ -1,0 +1,61 @@
+﻿@model Project2.Azure_DB.Task
+
+@{
+    ViewBag.Title = "WorklistDelete";
+}
+
+<h2>WorklistDelete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Task</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TaskName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TaskName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+    <input type="submit" value="Delete" class="btn btn-default" /> |
+        @{
+            string internUrl = Request.Cookies["filterCookie"]["internUrl"];
+            string yearUrl = Request.Cookies["filterCookie"]["yearUrl"];
+            string monthUrl = Request.Cookies["filterCookie"]["monthUrl"];
+        }
+        @Html.ActionLink("Back to List", "AdminIndex", new { internName = internUrl, month = monthUrl, year = yearUrl })
+    </div>
+    }
+</div>

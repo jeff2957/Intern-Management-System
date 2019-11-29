@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Project2.Azure_DB.Task>
+
+
+@{
+    ViewBag.Title = "_WorkListPartial";
+}
+
+
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700,700i,900&display=swap" rel="stylesheet">
+
+<div class="container">
+    <div class="list-inline">
+        <div class="col-lg-10" style="padding-top:7px;">
+            <h3>Work Record</h3>
+        </div>
+        <div class="col-lg-2">
+            <h5 style="padding-top:40px;">@Html.ActionLink("To Sign-in Sheet", "Index", "Signin")</h5>
+        </div>
+    </div>
+</div>
+<div class="col-lg-2 navbar-fixed-bottom">
+    <a href="@Url.Action("Create")">
+        <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/Group3.jpg" style="width:240px" />
+    </a>
+    <p>  </p>
+</div>
+
+<table class="table">
+    <div class="page-holder w-100 d-flex flex-wrap">
+        <div class="container-fluid px-xl-5">
+            <section class="py-5">
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                            </div>
+                            <div class="card-body">
+                                <table class="table  table-hover card-text">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.TaskName)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Duration)
+                                            </th>
+                                            <th class="col-lg-3">
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.TaskName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Duration)
+                                                </td>
+                                                <td class="col-lg-2">
+                                                    <a href="@Url.Action("WorklistEdit", new { id = item.TaskId })">
+                                                        <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/edit_btn.png" style="width:60px" />
+                                                    </a>
+                                                    <a href="@Url.Action("WorklistDelete", new { id = item.TaskId })">
+                                                        <img src="https://crsinternserviceimage.blob.core.windows.net/crsinternserviceimage/delete_btn.png" style="width:80px" />
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td></td>
+                                            <td><u>@Model.Sum(b => b.Duration)</u></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/Content/FontStyle")
+}
+
